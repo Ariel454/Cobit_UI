@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { useAuth } from "../context/authContext";
+import { useNavigate } from "react-router-dom";
 import {
   Container,
   Box,
@@ -13,7 +14,9 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 function Login() {
   const { auth, guardarAuth } = useAuth();
+
   console.log(auth);
+  const navigate = useNavigate();
   const [credenciales, guardarCredenciales] = useState({
     email: "",
     password: "",
@@ -32,7 +35,7 @@ function Login() {
       }
 
       // navigate redireccioar
-      // navigate("/");
+      navigate("/");
     } catch (error: any) {
       console.log(error);
       Swal.fire({

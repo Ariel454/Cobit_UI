@@ -25,30 +25,39 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
     </Fragment>
   );
 };
-function App() {
+
+const AppRoutes = () => {
   const { auth } = useAuth();
 
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="*"
+        element={
+          auth.auth ? (
+            <AppLayout>
+              <Routes>
+                {/* Aquí puedes agregar tus rutas protegidas */}
+                <Route path="/" element={<Home />} />
+                {/* Agrega más rutas según sea necesario */}
+              </Routes>
+            </AppLayout>
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+    </Routes>
+  );
+};
+
+function App() {
   return (
     <AuthContextProvider>
       <Router>
         <CssBaseline />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="*"
-            element={
-              auth.auth ? (
-                <AppLayout>
-                  {/* Aquí puedes agregar tus rutas protegidas */}
-                  <Route path="/" element={<Home />} />
-                  {/* Agrega más rutas según sea necesario */}
-                </AppLayout>
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-        </Routes>
+        <AppRoutes />
       </Router>
     </AuthContextProvider>
   );
