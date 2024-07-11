@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Container,
@@ -14,67 +14,6 @@ import {
 } from "@mui/material";
 
 const columnHeaders = [
-  {
-    id: 1,
-    codigo: "EM01",
-    descripcion: "Portafolio de productos y servicios competitivos",
-  },
-  { id: 2, codigo: "EM02", descripcion: "Gestión de riesgo de negocio" },
-  {
-    id: 3,
-    codigo: "EM03",
-    descripcion: "Cumplimiento con las leyes y regulaciones externas",
-  },
-  {
-    id: 4,
-    codigo: "EM04",
-    descripcion: "Calidad de la información financiera",
-  },
-  {
-    id: 5,
-    codigo: "EM05",
-    descripcion: "Cultura de servicio orientada al cliente",
-  },
-  {
-    id: 6,
-    codigo: "EM06",
-    descripcion: "Continuidad y disponibilidad del servicio del negocio",
-  },
-  {
-    id: 7,
-    codigo: "EM07",
-    descripcion: "Calidad de la información sobre gestión",
-  },
-  {
-    id: 8,
-    codigo: "EM08",
-    descripcion:
-      "Optimización de la funcionalidad de procesos internos del negocio",
-  },
-  {
-    id: 9,
-    codigo: "EM09",
-    descripcion: "Optimización de costes de los procesos del negocio",
-  },
-  {
-    id: 10,
-    codigo: "EM10",
-    descripcion: "Habilidades, motivación y productividad del personal",
-  },
-  {
-    id: 11,
-    codigo: "EM11",
-    descripcion: "Cumplimiento de las políticas internas",
-  },
-  {
-    id: 12,
-    codigo: "EM12",
-    descripcion: "Gestión de programas de transformación digital",
-  },
-  { id: 13, codigo: "EM13", descripcion: "Innovación de productos y negocios" },
-];
-
-const rowHeaders = [
   {
     id: 1,
     codigo: "AG01",
@@ -151,7 +90,127 @@ const rowHeaders = [
       "Conocimiento, experiencia e iniciativas para la innovación empresarial",
   },
 ];
+const rowHeaders = [
+  {
+    id: 1,
+    codigo: "EDM01",
+    descripcion:
+      "Asegurar el establecimiento y el mantenimiento del marco de gobierno",
+  },
+  {
+    id: 2,
+    codigo: "EDM02",
+    descripcion: "Asegurar la obtención de beneficios",
+  },
+  {
+    id: 3,
+    codigo: "EDM03",
+    descripcion: "Asegurar la optimización del riesgo",
+  },
+  {
+    id: 4,
+    codigo: "EDM04",
+    descripcion: "Asegurar la optimización de los recursos",
+  },
+  {
+    id: 5,
+    codigo: "EDM05",
+    descripcion: "Asegurar el compromiso de las partes interesadas",
+  },
+  {
+    id: 6,
+    codigo: "APO01",
+    descripcion: "Gestionar el marco de gestión de I&T",
+  },
+  { id: 7, codigo: "APO02", descripcion: "Gestionar la estrategia" },
+  {
+    id: 8,
+    codigo: "APO03",
+    descripcion: "Gestionar la arquitectura empresarial",
+  },
+  { id: 9, codigo: "APO04", descripcion: "Gestionar la innovación" },
+  { id: 10, codigo: "APO05", descripcion: "Gestionar el portafolio" },
+  {
+    id: 11,
+    codigo: "APO06",
+    descripcion: "Gestionar el presupuesto y los costes",
+  },
+  { id: 12, codigo: "APO07", descripcion: "Gestionar los recursos humanos" },
+  { id: 13, codigo: "APO08", descripcion: "Gestionar las relaciones" },
+  {
+    id: 14,
+    codigo: "APO09",
+    descripcion: "Gestionar los acuerdos de servicio",
+  },
+  { id: 15, codigo: "APO10", descripcion: "Gestionar los proveedores" },
+  { id: 16, codigo: "APO11", descripcion: "Gestionar la calidad" },
+  { id: 17, codigo: "APO12", descripcion: "Gestionar el riesgo" },
+  { id: 18, codigo: "APO13", descripcion: "Gestionar la seguridad" },
+  { id: 19, codigo: "APO14", descripcion: "Gestionar los datos" },
+  { id: 20, codigo: "BAI01", descripcion: "Gestionar los programas" },
+  {
+    id: 21,
+    codigo: "BAI02",
+    descripcion: "Gestionar la definición de requisitos",
+  },
+  {
+    id: 22,
+    codigo: "BAI03",
+    descripcion: "Gestionar la identificación y construcción de soluciones",
+  },
+  {
+    id: 23,
+    codigo: "BAI04",
+    descripcion: "Gestionar la disponibilidad y capacidad",
+  },
+  { id: 24, codigo: "BAI05", descripcion: "Gestionar el cambio organizativo" },
+  { id: 25, codigo: "BAI06", descripcion: "Gestionar los cambios de TI" },
+  {
+    id: 26,
+    codigo: "BAI07",
+    descripcion: "Gestionar la aceptación y la transición de los cambios de TI",
+  },
+  { id: 27, codigo: "BAI08", descripcion: "Gestionar el conocimiento" },
+  { id: 28, codigo: "BAI09", descripcion: "Gestionar los activos" },
+  { id: 29, codigo: "BAI10", descripcion: "Gestionar la configuración" },
+  { id: 30, codigo: "BAI11", descripcion: "Gestionar los proyectos" },
+  { id: 31, codigo: "DSS01", descripcion: "Gestionar las operaciones" },
+  {
+    id: 32,
+    codigo: "DSS02",
+    descripcion: "Gestionar las peticiones y los incidentes de servicio",
+  },
+  { id: 33, codigo: "DSS03", descripcion: "Gestionar los problemas" },
+  { id: 34, codigo: "DSS04", descripcion: "Gestionar la continuidad" },
+  {
+    id: 35,
+    codigo: "DSS05",
+    descripcion: "Gestionar los servicios de seguridad",
+  },
+  {
+    id: 36,
+    codigo: "DSS06",
+    descripcion: "Gestionar los controles de procesos de negocio",
+  },
+  {
+    id: 37,
+    codigo: "MEA01",
+    descripcion: "Gestionar la monitorización del desempeño y la conformidad",
+  },
+  {
+    id: 38,
+    codigo: "MEA02",
+    descripcion: "Gestionar el sistema de control interno",
+  },
+  {
+    id: 39,
+    codigo: "MEA03",
+    descripcion: "Gestionar el cumplimiento de los requisitos externos",
+  },
+  { id: 40, codigo: "MEA04", descripcion: "Gestionar el aseguramiento" },
+];
 
+// Ajustar los valores iniciales de las celdas para que comiencen en 1-1
 const initialCellValues: { [key: string]: string } = {
   "1-2": "S",
   "1-3": "P",
@@ -186,7 +245,7 @@ const initialCellValues: { [key: string]: string } = {
   "13-8": "P",
 };
 
-const RelacionamientoDeMetas = () => {
+const RelacionamientoDeObjetivos = () => {
   const [cellValues, setCellValues] = useState<{ [key: string]: string }>(
     initialCellValues
   );
@@ -230,17 +289,6 @@ const RelacionamientoDeMetas = () => {
   };
 
   const handleColumnHeaderClick = (colIndex: number) => {
-    const selectedRowHeader = rowHeaders.find((row) => {
-      const cellKey = `${row.id}-${colIndex + 1}`;
-      return cellValues[cellKey] === "P";
-    });
-
-    if (selectedRowHeader) {
-      // Aquí puedes manejar el valor del encabezado de la fila que tiene una "P"
-      console.log("Encabezado seleccionado:", selectedRowHeader);
-      // Guardar en el estado o realizar alguna otra acción
-    }
-
     setSelectedColumns((prev) => {
       const newSet = new Set(prev);
       if (prev.has(colIndex + 1)) {
@@ -257,19 +305,19 @@ const RelacionamientoDeMetas = () => {
     if (selectedColumns.has(colIndex + 1)) {
       const value = cellValues[cellKey];
       if (value === "S") {
-        return "grey";
+        return "lightblue";
       } else if (value === "P") {
         // Marcar la fila correspondiente al encontrar una "P"
         const rowHeaderCell = document.getElementById(`rowHeader-${rowIndex}`);
         if (rowHeaderCell) {
           rowHeaderCell.style.backgroundColor = "orange";
         }
-        return "lightblue";
+        return "blue";
       }
     }
     const clicks = cellClicks[cellKey] || 0;
     if (clicks >= 3) {
-      return "grey";
+      return "blue";
     } else if (clicks >= 2) {
       return "lightblue";
     } else {
@@ -281,9 +329,10 @@ const RelacionamientoDeMetas = () => {
     <Container>
       <CssBaseline />
       <Typography variant="h4" component="h1" gutterBottom>
-        Relacionamiento de Metas Empresariales y Metas de Alineamiento
+        Relacionamiento de Objetivos de Gobierno y Gestión con Metas de
+        Alineamiento
       </Typography>
-      <TableContainer component={Box}>
+      <TableContainer height={700} component={Box}>
         <Table>
           <TableHead>
             <TableRow>
@@ -351,9 +400,7 @@ const RelacionamientoDeMetas = () => {
                           }
                         />
                       ) : (
-                        <Typography style={{ fontWeight: "700" }}>
-                          {value}
-                        </Typography>
+                        <Typography>{value}</Typography>
                       )}
                     </TableCell>
                   );
@@ -367,4 +414,4 @@ const RelacionamientoDeMetas = () => {
   );
 };
 
-export default RelacionamientoDeMetas;
+export default RelacionamientoDeObjetivos;

@@ -39,6 +39,13 @@ const Sidebar = () => {
           <ListItemText primary="Matriz de alineamiento " />
         </ListItem>
         <Divider />
+        <ListItem button component={Link} to="/goals-matrix">
+          <ListItemIcon>
+            <BuildIcon />
+          </ListItemIcon>
+          <ListItemText primary="Relacionamiento objetivos " />
+        </ListItem>
+        <Divider />
         {/* <ListItem button component={Link} to="/intervenciones">
           <ListItemIcon>
             <BuildIcon />

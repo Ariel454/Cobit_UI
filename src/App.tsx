@@ -11,6 +11,7 @@ import Header from "./layout/header";
 import Sidebar from "./layout/sidebar";
 import { Box, CssBaseline } from "@mui/material";
 import Home from "./administration/Home/home";
+import GoalsMatrix from "./administration/Matriz/GoalsMatrix";
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -40,6 +41,7 @@ const AppRoutes = () => {
               <Routes>
                 {/* Aquí puedes agregar tus rutas protegidas */}
                 <Route path="/" element={<Home />} />
+                <Route path="/goals-matrix" element={<GoalsMatrix />} />
                 {/* Agrega más rutas según sea necesario */}
               </Routes>
             </AppLayout>
