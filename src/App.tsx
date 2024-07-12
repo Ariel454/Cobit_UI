@@ -12,6 +12,7 @@ import Sidebar from "./layout/sidebar";
 import { Box, CssBaseline } from "@mui/material";
 import Home from "./administration/Home/home";
 import GoalsMatrix from "./administration/Matriz/GoalsMatrix";
+import { useCobitReducer } from "./reducer";
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
@@ -29,7 +30,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
 
 const AppRoutes = () => {
   const { auth } = useAuth();
-
+  const reducerCobit = useCobitReducer();
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
@@ -40,7 +41,10 @@ const AppRoutes = () => {
             <AppLayout>
               <Routes>
                 {/* Aquí puedes agregar tus rutas protegidas */}
-                <Route path="/" element={<Home />} />
+                <Route
+                  path="/"
+                  element={<Home cobitReducer={reducerCobit} />}
+                />
                 <Route path="/goals-matrix" element={<GoalsMatrix />} />
                 {/* Agrega más rutas según sea necesario */}
               </Routes>

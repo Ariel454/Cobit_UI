@@ -1,4 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, Reducer } from "react";
+import axios from "axios";
 import {
   Box,
   Container,
@@ -12,145 +13,12 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
+import { MetaEmpresarial } from "../../utils/types/metas";
+import { ReducerValue } from "../../reducer";
 
-const columnHeaders = [
-  {
-    id: 1,
-    codigo: "EM01",
-    descripcion: "Portafolio de productos y servicios competitivos",
-  },
-  { id: 2, codigo: "EM02", descripcion: "Gestión de riesgo de negocio" },
-  {
-    id: 3,
-    codigo: "EM03",
-    descripcion: "Cumplimiento con las leyes y regulaciones externas",
-  },
-  {
-    id: 4,
-    codigo: "EM04",
-    descripcion: "Calidad de la información financiera",
-  },
-  {
-    id: 5,
-    codigo: "EM05",
-    descripcion: "Cultura de servicio orientada al cliente",
-  },
-  {
-    id: 6,
-    codigo: "EM06",
-    descripcion: "Continuidad y disponibilidad del servicio del negocio",
-  },
-  {
-    id: 7,
-    codigo: "EM07",
-    descripcion: "Calidad de la información sobre gestión",
-  },
-  {
-    id: 8,
-    codigo: "EM08",
-    descripcion:
-      "Optimización de la funcionalidad de procesos internos del negocio",
-  },
-  {
-    id: 9,
-    codigo: "EM09",
-    descripcion: "Optimización de costes de los procesos del negocio",
-  },
-  {
-    id: 10,
-    codigo: "EM10",
-    descripcion: "Habilidades, motivación y productividad del personal",
-  },
-  {
-    id: 11,
-    codigo: "EM11",
-    descripcion: "Cumplimiento de las políticas internas",
-  },
-  {
-    id: 12,
-    codigo: "EM12",
-    descripcion: "Gestión de programas de transformación digital",
-  },
-  { id: 13, codigo: "EM13", descripcion: "Innovación de productos y negocios" },
-];
-
-const rowHeaders = [
-  {
-    id: 1,
-    codigo: "AG01",
-    descripcion:
-      "Cumplimiento y soporte de I&T para el cumplimiento empresarial con las leyes y regulaciones externas",
-  },
-  {
-    id: 2,
-    codigo: "AG02",
-    descripcion: "Gestión de riesgo relacionado con I&T",
-  },
-  {
-    id: 3,
-    codigo: "AG03",
-    descripcion:
-      "Beneficios obtenidos del portafolio de inversiones y servicios relacionados con I&T",
-  },
-  {
-    id: 4,
-    codigo: "AG04",
-    descripcion:
-      "Calidad de la información financiera relacionada con la tecnología",
-  },
-  {
-    id: 5,
-    codigo: "AG05",
-    descripcion:
-      "Prestación de servicios de I&T conforme a los requisitos del negocio",
-  },
-  {
-    id: 6,
-    codigo: "AG06",
-    descripcion:
-      "Agilidad para convertir los requisitos del negocio en soluciones operativas",
-  },
-  {
-    id: 7,
-    codigo: "AG07",
-    descripcion:
-      "Seguridad de la información, infraestructura de procesamiento y aplicaciones, y privacidad",
-  },
-  {
-    id: 8,
-    codigo: "AG08",
-    descripcion:
-      "Habilitar y dar soporte a procesos de negocio mediante la integración de aplicaciones y tecnología",
-  },
-  {
-    id: 9,
-    codigo: "AG09",
-    descripcion:
-      "Ejecución de programas dentro del plazo, sin exceder el presupuesto, y que cumplen con los requisitos y estándares de calidad",
-  },
-  {
-    id: 10,
-    codigo: "AG10",
-    descripcion: "Calidad de la información sobre gestión de I&T",
-  },
-  {
-    id: 11,
-    codigo: "AG11",
-    descripcion: "Cumplimiento de I&T con las políticas internas",
-  },
-  {
-    id: 12,
-    codigo: "AG12",
-    descripcion:
-      "Personal competente y motivado con un entendimiento mutuo de la tecnología y el negocio",
-  },
-  {
-    id: 13,
-    codigo: "AG13",
-    descripcion:
-      "Conocimiento, experiencia e iniciativas para la innovación empresarial",
-  },
-];
+interface RelacionamientoDeMetasProps {
+  cobitReducer: ReducerValue;
+}
 
 const initialCellValues: { [key: string]: string } = {
   "1-2": "S",
@@ -186,7 +54,9 @@ const initialCellValues: { [key: string]: string } = {
   "13-8": "P",
 };
 
-const RelacionamientoDeMetas = () => {
+const RelacionamientoDeMetas: React.FC<RelacionamientoDeMetasProps> = ({
+  cobitReducer,
+}) => {
   const [cellValues, setCellValues] = useState<{ [key: string]: string }>(
     initialCellValues
   );
@@ -197,6 +67,8 @@ const RelacionamientoDeMetas = () => {
   const [selectedColumns, setSelectedColumns] = useState<Set<number>>(
     new Set()
   );
+
+  const { metasEmpresariales, metasAlineamiento } = cobitReducer;
 
   const handleCellClick = (rowIndex: number, colIndex: number) => {
     const cellKey = `${rowIndex + 1}-${colIndex + 1}`;
@@ -230,7 +102,7 @@ const RelacionamientoDeMetas = () => {
   };
 
   const handleColumnHeaderClick = (colIndex: number) => {
-    const selectedRowHeader = rowHeaders.find((row) => {
+    const selectedRowHeader = metasAlineamiento?.find((row) => {
       const cellKey = `${row.id}-${colIndex + 1}`;
       return cellValues[cellKey] === "P";
     });
@@ -288,7 +160,7 @@ const RelacionamientoDeMetas = () => {
           <TableHead>
             <TableRow>
               <TableCell />
-              {columnHeaders.map((header, index) => (
+              {metasEmpresariales?.map((header, index) => (
                 <TableCell
                   key={index}
                   onClick={() => handleColumnHeaderClick(index)}
@@ -310,7 +182,7 @@ const RelacionamientoDeMetas = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rowHeaders.map((row, rowIndex) => (
+            {metasAlineamiento?.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 <TableCell id={`rowHeader-${rowIndex}`}>
                   <Box>
@@ -318,7 +190,7 @@ const RelacionamientoDeMetas = () => {
                     <Typography variant="body2">{row.descripcion}</Typography>
                   </Box>
                 </TableCell>
-                {columnHeaders.map((_, colIndex) => {
+                {metasEmpresariales?.map((_, colIndex) => {
                   const cellKey = `${rowIndex + 1}-${colIndex + 1}`;
                   const value = cellValues[cellKey] || "";
                   const backgroundColor = getCellBackgroundColor(
