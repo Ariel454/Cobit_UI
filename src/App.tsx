@@ -45,7 +45,10 @@ const AppRoutes = () => {
                   path="/"
                   element={<Home cobitReducer={reducerCobit} />}
                 />
-                <Route path="/goals-matrix" element={<GoalsMatrix />} />
+                <Route
+                  path="/goals-matrix"
+                  element={<GoalsMatrix cobitReducer={reducerCobit} />}
+                />
                 {/* Agrega más rutas según sea necesario */}
               </Routes>
             </AppLayout>

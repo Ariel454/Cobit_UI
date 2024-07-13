@@ -1,5 +1,4 @@
-import React, { useState, useRef, useEffect, Reducer } from "react";
-import axios from "axios";
+import React, { useState, useEffect, Reducer } from "react";
 import {
   Box,
   Container,
@@ -13,53 +12,25 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
-import { MetaEmpresarial } from "../../utils/types/metas";
+import { MetaAlineamiento, MetaEmpresarial } from "../../utils/types/metas";
 import { ReducerValue } from "../../reducer";
 
 interface RelacionamientoDeMetasProps {
   cobitReducer: ReducerValue;
 }
 
-const initialCellValues: { [key: string]: string } = {
-  "1-2": "S",
-  "1-3": "P",
-  "1-6": "S",
-  "2-6": "P",
-  "2-10": "S",
-  "3-2": "P",
-  "3-10": "S",
-  "4-7": "P",
-  "5-1": "S",
-  "5-5": "S",
-  "5-6": "S",
-  "5-10": "P",
-  "6-7": "S",
-  "7-2": "P",
-  "7-6": "S",
-  "7-7": "S",
-  "8-7": "S",
-  "8-10": "S",
-  "9-1": "P",
-  "9-4": "P",
-  "9-6": "S",
-  "10-2": "P",
-  "10-5": "P",
-  "10-7": "S",
-  "11-2": "P",
-  "12-4": "P",
-  "12-7": "S",
-  "12-8": "P",
-  "12-10": "S",
-  "13-1": "S",
-  "13-8": "P",
-};
-
 const RelacionamientoDeMetas: React.FC<RelacionamientoDeMetasProps> = ({
   cobitReducer,
 }) => {
-  const [cellValues, setCellValues] = useState<{ [key: string]: string }>(
-    initialCellValues
-  );
+  const {
+    metasEmpresariales,
+    metasAlineamiento,
+    metasEmpresarialesAlineamiento,
+    setHighlightedMetas,
+    highlightedMetas,
+  } = cobitReducer;
+
+  const [cellValues, setCellValues] = useState<{ [key: string]: string }>({});
   const [editingCell, setEditingCell] = useState<{ [key: string]: boolean }>(
     {}
   );
@@ -68,7 +39,14 @@ const RelacionamientoDeMetas: React.FC<RelacionamientoDeMetasProps> = ({
     new Set()
   );
 
-  const { metasEmpresariales, metasAlineamiento } = cobitReducer;
+  useEffect(() => {
+    const initialValues: { [key: string]: string } = {};
+    metasEmpresarialesAlineamiento?.forEach((meta) => {
+      const cellKey = `${meta.id_meta_alineamiento}-${meta.id_meta_empresarial}`;
+      initialValues[cellKey] = meta.nivel;
+    });
+    setCellValues(initialValues);
+  }, [metasEmpresarialesAlineamiento]);
 
   const handleCellClick = (rowIndex: number, colIndex: number) => {
     const cellKey = `${rowIndex + 1}-${colIndex + 1}`;
@@ -102,16 +80,13 @@ const RelacionamientoDeMetas: React.FC<RelacionamientoDeMetasProps> = ({
   };
 
   const handleColumnHeaderClick = (colIndex: number) => {
-    const selectedRowHeader = metasAlineamiento?.find((row) => {
-      const cellKey = `${row.id}-${colIndex + 1}`;
-      return cellValues[cellKey] === "P";
-    });
+    const newHighlightedMetas =
+      metasAlineamiento?.filter((row) => {
+        const cellKey = `${row.id}-${colIndex + 1}`;
+        return cellValues[cellKey] === "P";
+      }) || [];
 
-    if (selectedRowHeader) {
-      // Aquí puedes manejar el valor del encabezado de la fila que tiene una "P"
-      console.log("Encabezado seleccionado:", selectedRowHeader);
-      // Guardar en el estado o realizar alguna otra acción
-    }
+    setHighlightedMetas([...highlightedMetas, ...newHighlightedMetas]);
 
     setSelectedColumns((prev) => {
       const newSet = new Set(prev);
@@ -131,7 +106,6 @@ const RelacionamientoDeMetas: React.FC<RelacionamientoDeMetasProps> = ({
       if (value === "S") {
         return "grey";
       } else if (value === "P") {
-        // Marcar la fila correspondiente al encontrar una "P"
         const rowHeaderCell = document.getElementById(`rowHeader-${rowIndex}`);
         if (rowHeaderCell) {
           rowHeaderCell.style.backgroundColor = "orange";
@@ -191,7 +165,7 @@ const RelacionamientoDeMetas: React.FC<RelacionamientoDeMetasProps> = ({
                   </Box>
                 </TableCell>
                 {metasEmpresariales?.map((_, colIndex) => {
-                  const cellKey = `${rowIndex + 1}-${colIndex + 1}`;
+                  const cellKey = `${row.id}-${colIndex + 1}`;
                   const value = cellValues[cellKey] || "";
                   const backgroundColor = getCellBackgroundColor(
                     rowIndex,
@@ -235,6 +209,16 @@ const RelacionamientoDeMetas: React.FC<RelacionamientoDeMetasProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <Box mt={2}>
+        <Typography variant="h6">Metas de Alineamiento Pintadas:</Typography>
+        <ul>
+          {highlightedMetas?.map((meta, index) => (
+            <li key={index}>
+              {meta.codigo}: {meta.descripcion}
+            </li>
+          ))}
+        </ul>
+      </Box>
     </Container>
   );
 };
